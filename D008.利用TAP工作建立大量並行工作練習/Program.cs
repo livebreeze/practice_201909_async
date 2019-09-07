@@ -16,8 +16,6 @@ namespace D008.利用TAP工作建立大量並行工作練習
             string path = "/api/RemoteSource/Source3";
             string url = $"{host}{path}";
 
-            HttpClient client = new HttpClient();
-
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();//引用stopwatch物件
             sw.Reset();//碼表歸零
             sw.Start();//碼表開始計時
@@ -29,6 +27,7 @@ namespace D008.利用TAP工作建立大量並行工作練習
                 var j = string.Format("{0:D2}", i);
                 var t = new Task(() =>
                 {
+                    HttpClient client = new HttpClient();
                     Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-1 測試開始時間 {DateTime.Now}");
                     var result = client.GetStringAsync(url).Result;
                     Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-1 測試結果內容 {result}");
