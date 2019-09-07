@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="委派類型的工作.cs" />
     <Compile Include="承諾類型的工作.cs" />
   </ItemGroup>
   <ItemGroup>
