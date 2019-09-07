@@ -25,21 +25,31 @@ namespace D008.利用TAP工作建立大量並行工作練習
             for (int i = 0; i < 10; i++)
             {
                 var j = string.Format("{0:D2}", i);
-                var t = new Task(() =>
+                string task1 = null;
+                string task2 = null;
+
+                var t1 = Task.Run(async () =>
                 {
                     HttpClient client = new HttpClient();
                     Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-1 測試開始時間 {DateTime.Now}");
-                    var result = client.GetStringAsync(url).Result;
-                    Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-1 測試結果內容 {result}");
+                    task1 = await client.GetStringAsync(url);
+                    Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-1 測試結果內容 {task1}");
                     Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-1 測試結束時間 {DateTime.Now}");
+                   
+                });
 
+                var t2 = Task.Run(async () =>
+                {
+                    HttpClient client = new HttpClient();
+                   
                     Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-2 測試開始時間 {DateTime.Now}");
-                    result = client.GetStringAsync(url).Result;
-                    Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-2 測試結果內容 {result}");
+                    task2 = await client.GetStringAsync(url);
+                    Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-2 測試結果內容 {task2}");
                     Console.WriteLine($" {Thread.CurrentThread.ManagedThreadId} :第 {j}-2 測試結束時間 {DateTime.Now}");
                 });
-                t.Start();
-                tasks.Add(t);
+            
+                tasks.Add(t1);
+                tasks.Add(t2);
             }
             
             Task.WaitAll(tasks.ToArray());
